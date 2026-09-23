@@ -32,15 +32,17 @@ The remainder of the orchestration script will run each step in order. No manual
 
 ### Step 1 - Install and load packages
 
-This step ensures all required R packages are installed and loads them for future steps.
+This step ensures all required R packages are installed and loads them for future steps. Required packages are: *tidyverse, janitor, arrow, readxl, remotes,* and *albert.*
 
 \**And potentially that they're the correct version.*
 
 ### Step 2 - Load data
 
-Run load_data.R
+This step reads in raw data, which will be transformed in future steps. New weekly files are cumulative, meaning each new files contains all records from the previous one. As a result, this step will seek out the most recent file associated with each year included in the folder, then read that in. This step pulls column formatting information from the data dictionary in this repo.
 
-New files are typically available each week, and for two different years at a time. Even after a year ends, MDH analysts See *documentation* for a full discussion of how provisional files arrive (*probably just move all of this there)*.
+This step is not designed to read in out-of-state files because they're no longer regularly available.
+
+\***Would this detail a concern when publishing this publicly?**
 
 ### Step 3 - Cause of death coding
 
@@ -59,3 +61,5 @@ IDEAS
 -   Mention pull requests if there are any changes. Can we change a setting so people can't push back to main? Option for people to develop in other branches
 
 -   Space to add their own code?
+
+-   How edited do we want the data dict to be?

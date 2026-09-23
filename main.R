@@ -8,5 +8,5 @@ trusted_format <- c("Combined", "Annual")
 #Validate manually input values
 
 #Run scripts
-
-source("./install_packages.R")
+source("./steps/install_packages.R")
+source("./steps/load_data.R")
