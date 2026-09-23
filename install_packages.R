@@ -1,11 +1,11 @@
-## Install packages
-#- do we want to handle updates here too? Or maybe just set to a specific version
+# Install packages
+#- do we want to set version here too?
 package_dependencies <- c(
   "tidyverse", #may be worth using the individual packages to prevent so much being loaded
   "janitor", #may be able to replace this depending on how it's used
   "arrow", #for now.. does this install have any dependencies that could be a problem?
   "readxl",
-  "remotes",
+  "remotes", #install github package
   "albert"
 )
 
@@ -27,7 +27,7 @@ if (length(uninstalled) != 0){
   
 }
 
-##Load packages
+#Load packages
 library(tidyverse)
 library(janitor)
 library(readxl)
