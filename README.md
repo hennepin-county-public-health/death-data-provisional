@@ -8,11 +8,11 @@ For additional documentation about working with the provisional death data, see 
 
 # Data cleaning and transformation
 
-Code for data cleaning and transformation is broken down into several short R scripts, each intended to accomplish a particular task. This approach was intended to make the code easier to understand than if it was combined into a single longer script. As a result, the provisional_main.R file is used as an "orchestrator" file. Running this script will run each individual task in the correct order, ending with a cleaned file.
+Code for data cleaning and transformation is broken down into several short R scripts, each intended to accomplish a particular step. This approach was intended to make the code easier to understand than if it was combined into a single longer script. As a result, the provisional_main.R file is used as an "orchestrator" file. Running this script will run each individual task in the correct order, ending with a cleaned file.
 
 Throughout this text, we use use a few pieces of terminology that are useful to know.
 
--   Raw data: this is data in the original form you receive it, without any changes. Raw provisional death data likely comes directly from the Minnesota Department of Health (MDH) Cloud Drive.
+-   Raw data: this is data in the original form you receive it, without any changes. Raw provisional death data likely comes directly from the Minnesota Department of Health (MDH) Cloud Drive. Please keep the original file names (i.e. 2026_MNDEATHS_20260921.csv) because having the date in the file name is important for this process.
 
 -   Trusted data: this is data in its final form, after it's been cleaned and transformed. This data should be a reliable source for analysis and reporting.
 
@@ -20,29 +20,21 @@ Throughout this text, we use use a few pieces of terminology that are useful to 
 
 Although users can run all code in this repository through main.R it should be pretty simple. In the first part of the script, users should set a few values that will be unique to them. This is the only step that includes manual changes. Users must set the following values:
 
--   Input folder: the path to the folder where the raw data is stored.
--   Export folder: the path to the folder where the trusted file should be written.
+-   Input folder: the path to the folder where the raw data is stored. All files in this folder will be used.
+-   Export folder: the path to the folder where the trusted file should be written. Should be a different folder than specified for input.
 -   Export file name: the name of the final trusted file.
 -   Output format: the preferred file format of the trusted data. Both "csv" and "parquet" are supported options.
--   Trusted format: if there are multiple years of data, should they be written to a single combined file, separate annual files, or both? \`Leave trusted_format \<- c("Combined", "Annual")\`
+-   Trusted format: if there are multiple years of data, should they be written to a single combined file, separate annual files, or both? Leave `trusted_format <- c("Combined", "Annual")` for both, otherwise remove the unwanted option.
 
-Additionally, users can choose to supply information to the following values:
+The remainder of the orchestration script will run each step in order. No manual changes should be necessary. Users should receive occasional messages in their console as each step runs and complete. Once all steps are completed, they should find the trusted data saved in their specified folder.
 
--   Input file name pattern: a common naming pattern shared across all raw data. By default, all data in the input folder will be used, but supplying this will filter data down
-
--   Input file name: the name of the raw file. This will likely be the name of the file as downloaded from the Cloud Drive.
-
-    -   *No this will likely be a bunch of files, so probably don't want to take this approach. Maybe can set an optional value that would only take files with a certain naming scheme.*
-
-It's strongly recommended that each analyst preserve the raw version of their data, rather than overwriting. This allows the analyst to go back and re-run code against the original data at any time to re-generated their trusted data or look for the cause of a discrepancy or error. In addition, it's often using to store raw and trusted data in different location or folders, so the two types of data are kept distinct.
-
-Finally, the remainder of the orchestration script will run each task inorder. It's of course possible to run the tasks individually as well, but keep in mind that they should be executed in the order described in this guide. *In addition, you'd need to manually specify the values described in this guide as well.*
-
-## Run the main script which will invoke the following steps
+## The main script will execute the following steps
 
 ### Step 1 - Install and load packages
 
-The first script that should be run ensures all necessary R packages are installed and loaded. *And potentially that they're the correct version.*
+This step ensures all required R packages are installed and loads them for future steps.
+
+\**And potentially that they're the correct version.*
 
 ### Step 2 - Load data
 
