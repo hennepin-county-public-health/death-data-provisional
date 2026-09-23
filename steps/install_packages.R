@@ -1,3 +1,5 @@
+message("Loading packages.")
+
 # Install packages
 #- do we want to set version here too?
 package_dependencies <- c(
