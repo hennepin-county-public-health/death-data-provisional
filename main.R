@@ -1,7 +1,7 @@
 #Set mandatory values
 input_folder <- NULL
 output_folder <- NULL
-output_file <- NULL
+output_file <- NULL #year will be appended after if "annual" format is chosen
 output_format <- NULL # "csv" or "parquet"
 trusted_format <- c("combined", "annual")
 
