@@ -1,4 +1,4 @@
-message("Loading packages.")
+message("Step 2. Loading packages.")
 
 # Install packages
 #- do we want to set version here too?

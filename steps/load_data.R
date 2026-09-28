@@ -1,4 +1,4 @@
-message("Step 2. Loading raw data.")
+message("Step 3. Loading raw data.")
 
 ## Identify most recent file for each year ##
 files <- tibble(file = list.files(input_folder, pattern = "MNDEATHS")) |>

@@ -30,13 +30,17 @@ The remainder of the orchestration script will run each step in order. No manual
 
 ## The main script will execute the following steps
 
-### Step 1 - Install and load packages
+### Step 1. Validate input values
+
+This quick step makes sure all necessary manual values were added, and makes sure the values are valid when relevant.
+
+### Step 2. Install and load packages
 
 This step ensures all required R packages are installed and loads them for future steps. Required packages are: *tidyverse, janitor, arrow, readxl, remotes,* and *albert.*
 
 \**And potentially that they're the correct version.*
 
-### Step 2 - Load data
+### Step 3. Load data
 
 This step reads in raw data, which will be transformed in future steps. New weekly files are cumulative, meaning each new files contains all records from the previous one. As a result, this step will seek out the most recent file associated with each year included in the folder, then read that in. This step pulls column formatting information from the data dictionary in this repo.
 
@@ -44,22 +48,40 @@ This step is not designed to read in out-of-state files because they're no longe
 
 \***Would this detail a concern when publishing this publicly?**
 
-### Step 3 - Cause of death coding
+### Step 4. Cause of death coding
 
-Run geography.R
+Once the data has been loaded, cleaning and transformation can begin. First, this step creates cause of death categories based on the ICD-10 information associated with each record. For a list of created categories, see *XXXXX*. These categories were agreed upon by members of the death data collaborative.
 
-IDEAS
+### Step 5. Other transformations, including race and ethnicity coding
 
--   "extra": likely quality monitoring, delay monitoring?
+After cause of death coding, this steps performs a few addition data cleaning tasks. The biggest is creating a combined race and ethnicity category from the many related variables included in the death data. This code also includes some smaller tasks like creating a measure of years of potential life lost (YPLL) and removing inconsistent missing placeholder values.
+
+### Step 6. Write trusted data
+
+Finally, this step arranges the variables in the data and writes the trusted file. After this is executed, the process is complete.
+
+### Additional ideas
+
+The description above covers all of the steps needed to transform Minnesota's weekly death data into a clean and ready-for-analysis file. *Something about the group having code related to all of this, unless we don't want to extend ourselves that way.*
+
+-   Age adjustment
+
+-   Junk code monitoring
+
+-   Death delay monitoring
+
+-   Geocoding
+
+To do/notes
 
 -   Might we eventually include python (or other) code for the same process? If so, should that affect how the repo is structured?
 
--   The goal is to make sure agencies have consistent reporting
-
--   Example age-adjusted death rate script
-
 -   Mention pull requests if there are any changes. Can we change a setting so people can't push back to main? Option for people to develop in other branches
 
--   Space to add their own code?
-
 -   How edited do we want the data dict to be?
+
+-   Need to determine standard race and ethnicity names. Still have questions to address in our internal data after reviewing Olmsted's process.
+
+-   Rename documentation so it's in a consistent format
+
+-   Maybe join with more info about underlying cause of death rankings
