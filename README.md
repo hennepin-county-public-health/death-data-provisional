@@ -1,4 +1,4 @@
-_The code is this repo is currently in development and note finalized._
+_The code in this repo is currently in development and not finalized._
 
 # Provisional death data
 
