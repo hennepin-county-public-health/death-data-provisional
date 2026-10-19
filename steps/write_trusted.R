@@ -17,37 +17,40 @@ dth_final <- dth_cln |>
 rm(dth_cln)
 
 #Write final file
-output_path <- str_c(output_folder, "/", output_file) |>
-  str_replace("//", "/") |> #will work regardless of / in output folder
+output_path <- str_c(output_folder, output_file) |>
   str_remove("\\.csv|\\.parquet") #remove if present, will get from other input
 
 #Write combined file, if applicable
 if ("combined" %in% trusted_format){
   
-  if (output_format == "csv"){
+  if ("csv" %in% output_format){
     
     write_csv(dth_final, str_c(output_path, ".csv"))
     
-  } else if (output_format == "parquet"){
+  } 
+  
+  if ("parquet" %in% output_format){
     
     write_parquet(dth_final, str_c(output_path, ".parquet"))
   }
   
-  message("Trusted combined file written.")
+  message("Trusted combined file(s) written.")
 }
 
 if ("annual" %in% trusted_format){
   yrs <- unique(dth_final$file_year)
   
-  if (output_format == "csv"){
+  if ("csv" %in% output_format){
     
     for (yr in yrs){
       dth_final |>
         filter(file_year == yr) |>
-        write_csv(str_c(output_path, "_", yr, ".csv"))
+        write_csv(str_c(output_path, "_", yr, ".csv"), na = "")
     }
     
-  } else if (output_format == "parquet"){
+  } 
+  
+  if ("parquet" %in% output_format){
     
     for (yr in yrs){
       dth_final |>

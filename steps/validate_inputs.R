@@ -11,12 +11,25 @@ if (any(sapply(values, is.null))){
   stop("Not all mandatory values specified.")
 }
 
-if (!output_format %in% c("csv", "parquet")){
+if (!any(output_format %in% c("csv", "parquet"))){
   stop("Invalid output format specified. Please select csv or parquet.")
 }
 
 if (!any(trusted_format %in% c("combined", "annual"))){
   stop("Invalid output format specified. Please select csv or parquet.")
+}
+
+#If missing, add a backslash to the end of folder paths
+input_folder <- if (grepl("/$", input_folder)) {
+  input_folder
+} else {
+  paste0(input_folder, "/")
+}
+
+output_folder <- if (grepl("/$", output_folder)) {
+  output_folder
+} else {
+  paste0(output_folder, "/")
 }
 
 #Cleanup

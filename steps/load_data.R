@@ -2,11 +2,12 @@ message("Step 3. Loading raw data.")
 
 ## Identify most recent file for each year ##
 files <- tibble(file = list.files(input_folder, pattern = "MNDEATHS")) |>
-  separate_wider_delim(file, delim = "_", names = c("year", NA, "date"), cols_remove = FALSE) |>
+  mutate(file_clean = str_remove(file, "\\(.*\\)")) |> #may be common if multiple versions have been downloaded
+  separate_wider_delim(file_clean, delim = "_", names = c("year", NA, "date")) |>
   mutate(date = str_remove(date, ".csv"),
          date = ymd(date)) |>
   filter(date == max(date), .by = year) |> #get most recent file for each data year
-  slice(1, .by = year) #in case there are multiples with the same date (has happened)
+  slice(1, .by = year) #in case there are multiples with the same date (seems like it could easily happen)
 
 last_file <- max(files$date) #will be used in a future step too
 

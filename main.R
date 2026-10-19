@@ -2,7 +2,7 @@
 input_folder <- NULL
 output_folder <- NULL
 output_file <- NULL #year will be appended after if "annual" format is chosen
-output_format <- NULL # "csv" or "parquet"
+output_format <- c("csv", "parquet")
 trusted_format <- c("combined", "annual")
 
 #Run scripts
