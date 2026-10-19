@@ -1,3 +1,5 @@
+*The code in this repo is currently in development and not finalized.*
+
 # Getting started
 
 This repository (repo) contains R code for standard cleaning and transformation of the provisional (weekly) Minnesota death file. Running it will produce a finalized death file for reliable reporting and analysis. This repo is publicly available to reduce the duplication of work between local public health departments and make it easier for them to report data using the same standards. The description below provides a step-by-step description of how to run the code and describes what it does.
