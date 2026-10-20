@@ -4,11 +4,17 @@
 
 This repository (repo) contains R code for standard cleaning and transformation of the provisional (weekly) Minnesota death file. Running it will produce a finalized death file for reliable reporting and analysis. This repo is publicly available to reduce the duplication of work between local public health departments and make it easier for them to report data using the same standards. The description below provides a step-by-step description of how to run the code and describes what it does.
 
-For additional documentation about working with the provisional death data, see the **data dictionary** and **some documentation describing the data***.* All content in this repo, including documentation, was assembled by Minnesota local public health staff that are part of the Death Data Collaborative. The goal of this collaborative is to develop and share best practices for working with death data.
+For additional documentation about working with the provisional death data, see the [data dictionary](https://github.com/hennepin-county-public-health/death-data-provisional/blob/main/documentation/Death%20data%20dictionary.xlsx) and **some documentation describing the data***.* All content in this repo, including documentation, was assembled by Minnesota local public health staff that are part of the Death Data Collaborative. The goal of this collaborative is to develop and share best practices for working with death data.
+
+## Prerequisites
+
+-   Download provisional death files to a folder on your computer.
+
+-   Download R and and your preferred integrated developed environment (IDE) such as RStudio or Visual Studio Code.
 
 # Cloning this repo
 
-Running the death data cleaning code doesn't require extensive experience with GitHub, but users will need to download code from this repo to their local computer so it can be run. This is referred to as "cloning" a repo. All code files are located within the repo, along with these instructions and some other documentation files. Please read [Cloning a repository - GitHub Docs](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository) for information about how to clone this repository from your browser, or look for guidance specific to the software you prefer to use (RStudio, Visual Studio Code). Since this repo in public, users do not need a GitHub account to clone it.
+Running the death data cleaning code doesn't require extensive experience with GitHub, but users will need to download code from this repo to their local computer to run it. This is referred to as "cloning" a repo. All code files are located within the repo, along with these instructions and other documentation. Please read [Cloning a repository - GitHub Docs](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository) for information about how to clone this repo from your browser, or look for guidance specific to the software you prefer to use (RStudio, Visual Studio Code). Since this repo is public, users do not need a GitHub account to clone it.
 
 *Think through this guidance. They don't need to go through all steps, could just download it from browser.*
 
@@ -26,18 +32,23 @@ Throughout this text, we use use a couple pieces of terminology that are useful 
 
 All code in this repo can be run using *main.R*. It requires the user to fill in a few pieces of information unique to them before running the code. This is the only part of running the code that should require any manual input. Users must set the following values:
 
--   **Input folder**: the path to the folder where the raw data is stored. All files in this folder will be used.
+-   **Input folder**: the path to the folder where the raw data is stored. All files in this folder will be used. Like all strings in R, the folder path should be within quotes.
     -   Example: "*C:/Users/\<user\>/Documents/provisional_death_files/*"
     -   Keep in mind that back-slashes (\\) get messy in R, so you should use forward-slashes (/) in your path. Leave a trailing forward-slash in your path, consistent with the example.
--   **Export folder**: the path to the folder where the trusted file should be written. Save your final, trusted data to a different location than your raw files.
--   **Export file name**: the name of the final trusted file.
+-   **Output folder**: the path to the folder where the trusted file should be written. Save your final, trusted data to a different location than your raw files.
+-   **Ouput file name**: the name of the final trusted file.
     -   Example: *mn_provisional_death_data*
--   Output format: the preferred file format of the trusted data. Both "csv" and "parquet" are supported options.
--   Trusted format: if there are multiple years of data, should they be written to a single combined file, separate annual files, or both? Leave `trusted_format <- c("Combined", "Annual")` for both, otherwise remove the unwanted option.
+-   **Output format**: the preferred file format of the trusted data. Both "csv" and "parquet" are supported options.
+    -   To write both types of files, keep the default `output_format <- c("csv", "parquet")`. Otherwise, remove one of the two file types.
+-   **Trusted format:** select whether you want to write a single trusted file that includes all years of data, separate files for each year, or both.
+    -   Similar to the last argument, keep `trusted_format <- c("Combined", "Annual")` to write both types of files or remove one.
+    -   The year will be appended the name of annual files, for instance *mn_provisional_data_2026.csv*.
 
-The remainder of the orchestration script will run each step in order. No manual changes should be necessary. Users should receive occasional messages in their console as each step runs and complete. Once all steps are completed, they should find the trusted data saved in their specified folder.
+The remainder of the orchestration script will run each step in order. No manual changes should be necessary. Users willreceive occasional messages in their console as each step runs and complete. Once all steps are completed, they should find the trusted data saved in their specified folder. The code generally shouldn't take more than a minute to finish, although it may be a bit slower the first time it's run.
 
 ## The main script will execute the following steps
+
+Each step is executed in *main.R* using code like `source("./steps/validate_inputs.R")`. The dot at the beginning of the path is shorthand for a reference to your current working directory (the cloned repo). So, *main.R* looks inside the *steps* folder in the repo to find each the code for each step.
 
 ### Step 1. Validate input values
 
