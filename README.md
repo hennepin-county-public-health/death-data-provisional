@@ -36,15 +36,15 @@ All code in this repo can be run using *main.R*. It requires the user to fill in
     -   Example: "*C:/Users/\<user\>/Documents/provisional_death_files/*"
     -   Keep in mind that back-slashes (\\) get messy in R, so you should use forward-slashes (/) in your path. Leave a trailing forward-slash in your path, consistent with the example.
 -   **Output folder**: the path to the folder where the trusted file should be written. Save your final, trusted data to a different location than your raw files.
--   **Ouput file name**: the name of the final trusted file.
+-   **Output file name**: the name of the final trusted file.
     -   Example: *mn_provisional_death_data*
 -   **Output format**: the preferred file format of the trusted data. Both "csv" and "parquet" are supported options.
     -   To write both types of files, keep the default `output_format <- c("csv", "parquet")`. Otherwise, remove one of the two file types.
 -   **Trusted format:** select whether you want to write a single trusted file that includes all years of data, separate files for each year, or both.
-    -   Similar to the last argument, keep `trusted_format <- c("Combined", "Annual")` to write both types of files or remove one.
+    -   Similar to the last argument, keep `trusted_format <- c("combined", "annual")` to write both types of files or remove one.
     -   The year will be appended the name of annual files, for instance *mn_provisional_data_2026.csv*.
 
-The remainder of the orchestration script will run each step in order. No manual changes should be necessary. Users willreceive occasional messages in their console as each step runs and complete. Once all steps are completed, they should find the trusted data saved in their specified folder. The code generally shouldn't take more than a minute to finish, although it may be a bit slower the first time it's run.
+The remainder of the orchestration script will run each step in order. No manual changes should be necessary. Users will receive occasional messages in their console as each step runs and complete. Once all steps are completed, they should find the trusted data saved in their specified folder. The code generally shouldn't take more than a minute to finish, although it may be a bit slower the first time it's run.
 
 ## The main script will execute the following steps
 
@@ -62,43 +62,43 @@ This step ensures all required R packages are installed and loads them for futur
 
 ### Step 3. Load data
 
-This step reads in raw data, which will be transformed in future steps. New weekly files are cumulative, meaning each new files contains all records from the previous one. As a result, this step will seek out the most recent file associated with each year included in the folder, then read that in. This step pulls column formatting information from the data dictionary in this repo.
-
-This step is not designed to read in out-of-state files because they're no longer regularly available.
-
-\***Would this detail a concern when publishing this publicly?**
+This step reads in the raw data that will be transformed in future steps. New weekly files are cumulative, meaning each new file contains all records from the previous one. As a result, this step will seek out the most recent file for each year to read. This step pulls column formatting metadata from the data dictionary in this repo.
 
 ### Step 4. Cause of death coding
 
-Once the data has been loaded, cleaning and transformation can begin. First, this step creates cause of death categories based on the ICD-10 information associated with each record. For a list of created categories, see *XXXXX*. These categories were agreed upon by members of the death data collaborative.
+Once the data has been loaded, cleaning and transformation can begin. First, this step creates cause of death categories based on the ICD-10 codes of each record. For a list of created categories, see ***XXXXX***. These categories were agreed upon by members of the death data collaborative.
 
 ### Step 5. Other transformations, including race and ethnicity coding
 
-After cause of death coding, this steps performs a few addition data cleaning tasks. The biggest is creating a combined race and ethnicity category from the many related variables included in the death data. This code also includes some smaller tasks like creating a measure of years of potential life lost (YPLL) and removing inconsistent missing placeholder values.
+After cause of death coding, this step performs a few addition data cleaning tasks. The biggest is creating a combined race and ethnicity category from the many related variables included in the death data. This code also includes some smaller tasks like creating a measure of years of potential life lost (YPLL) and removing inconsistent missing placeholder values.
 
 ### Step 6. Write trusted data
 
 Finally, this step arranges the variables in the data and writes the trusted file. After this is executed, the process is complete.
 
-### Additional ideas
+## Additional ideas
 
-The description above covers all of the steps needed to transform Minnesota's weekly death data into a clean and ready-for-analysis file. *Something about the group having code related to all of this, unless we don't want to extend ourselves that way.*
+The directions above cover everything needed to cleaned weekly death files so they're ready for analysis and reporting. However, there are opportunities for adding additional features to trusted data. A couple ideas are listed below. Members of the Death Data Collaborative group have related code that can be shared if there's any interest.
 
--   Age adjustment
+**Age adjustment**
 
--   Junk code monitoring
+In addition to presenting crude death rates, reporting and analysis often benefits from using age-adjusted deaths rates.
 
--   Death delay monitoring
+**Death delay monitoring**
 
--   Geocoding
+There is some delay between when a death occurs and when it's included in the death data. The length of the delay depends on several factors, especially the complexity of the investigation that stems from factors like cause of death. Knowing how delayed weekly data is, especially by cause of death, can be important for using weekly data for monitoring population health.
 
-To do/notes
+For instance, knowing 95% of deaths from a certain cause are present in the data within 4 months of occurring can help inform how you can monitor that group of deaths.
 
--   Might we eventually include python (or other) code for the same process? If so, should that affect how the repo is structured?
+**Garbage code monitoring**
 
--   Mention pull requests if there are any changes. Can we change a setting so people can't push back to main? Option for people to develop in other branches
+Garbage codes are cause of death codes that provide information that's inaccurate or not useful. They include things like impossible causes of death, non-specific causes, intermediate causes, and other codes that shouldn't be considered an underlying cause of death.
 
--   How edited do we want the data dict to be?
+**Geocoding**
+
+Users may wish to geocode location information for more accurate reporting.
+
+## To do
 
 -   Need to determine standard race and ethnicity names. Still have questions to address in our internal data after reviewing Olmsted's process.
 
