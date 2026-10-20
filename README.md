@@ -16,7 +16,7 @@ For additional documentation about working with the provisional death data, see 
 
 Running the death data cleaning code doesn't require extensive experience with GitHub, but users will need to download code from this repo to their local computer to run it. This is referred to as "cloning" a repo. All code files are located within the repo, along with these instructions and other documentation. Please read [Cloning a repository - GitHub Docs](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository) for information about how to clone this repo from your browser, or look for guidance specific to the software you prefer to use (RStudio, Visual Studio Code). Since this repo is public, users do not need a GitHub account to clone it.
 
-*Think through this guidance. They don't need to go through all steps, could just download it from browser.*
+*Think through this guidance. They don't need to go through all steps, could just download it from browser. Develop description for both options.*
 
 # Data cleaning and transformation
 
@@ -30,21 +30,35 @@ Throughout this text, we use use a couple pieces of terminology that are useful 
 
 ## Modify main.R
 
-First, open the *death-data-provisional* R project in your cloned repo in your IDE.
+First, open the *death-data-provisional* R project in your cloned repo using your IDE.
 
 All code in this repo can be run using *main.R*. It requires the user to fill in a few pieces of information unique to them before running the code. This is the only part of running the code that should require any manual input. Users must set the following values:
 
 -   **Input folder**: the path to the folder where the raw data is stored. All files in this folder will be used. Like all strings in R, the folder path should be within quotes.
+
     -   Example: "*C:/Users/\<user\>/Documents/provisional_death_files/*"
-    -   Keep in mind that back-slashes (\\) get messy in R, so you should use forward-slashes (/) in your path. Leave a trailing forward-slash in your path, consistent with the example.
--   **Output folder**: the path to the folder where the trusted file should be written. Save your final, trusted data to a different location than your raw files.
+    -   Keep in mind that back-slashes get messy in R, so you should use forward-slashes in your path. Leave a trailing forward-slash at the end of your path, consistent with the example.
+
+-   **Output folder**: the path to the folder where the trusted file should be written. We recommend saving your trusted data to a different location than your raw files.
+
+    -   The default option will create a new folder to store this data inside the downloaded repo. Keep this, or add your preferred destination.
+
 -   **Output file name**: the name of the final trusted file.
-    -   Example: *mn_provisional_death_data*
--   **Output format**: the preferred file format of the trusted data. Both "csv" and "parquet" are supported options.
+
+    -   The default option is *trusted_death_data*. Users can adjust this as needed.
+
+    **Output format**: the preferred file format of the trusted data. Both "csv" and "parquet" are supported options.
+
     -   To write both types of files, keep the default `output_format <- c("csv", "parquet")`. Otherwise, remove one of the two file types.
+
 -   **Trusted format:** select whether you want to write a single trusted file that includes all years of data, separate files for each year, or both.
+
     -   Similar to the last argument, keep `trusted_format <- c("combined", "annual")` to write both types of files or remove one.
     -   The year will be appended the name of annual files, for instance *mn_provisional_data_2026.csv*.
+
+-   **Residence county filter**: add the name of one or more counties you'd like data for. The trusted data will be filtered to only include these counties using the *decd_res_cnty* variable.
+
+    -   Examples: `residence_county <- c("TODD")` or `residence_county <- c("TODD", "STEARNS")` .
 
 The remainder of the orchestration script will run each step in order. No manual changes should be necessary. Users will receive occasional messages in their console as each step runs and complete. Once all steps are completed, they should find the trusted data saved in their specified folder. The code generally shouldn't take more than a minute to finish, although it may be a bit slower the first time it's run.
 

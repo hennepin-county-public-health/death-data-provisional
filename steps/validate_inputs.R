@@ -1,7 +1,7 @@
 message("Step 1. Validating manually input values.")
 
-#Make a couple options case-insenstive
-output_format <- tolower(output_format)
+#Make a couple options case-insensitive
+output_format <- gsub("\\.", "", tolower(output_format))
 trusted_format <- tolower(trusted_format)
 
 #Validate manually input values
@@ -32,7 +32,32 @@ output_folder <- if (grepl("/$", output_folder)) {
   paste0(output_folder, "/")
 }
 
+#If default trusted folder is selected, create if it doesn't exist
+if (!file.exists("./trusted_data/")){
+  dir.create(output_folder)
+}
+
+#Validate county filter selections
+mn_counties <- read.csv("./documentation/mn_counties.csv")$county
+residence_county <- residence_county[!residence_county == ""]
+residence_county <- toupper(residence_county)
+residence_county <- gsub("ST. |ST ", "SAINT ", residence_county)
+
+if (length(residence_county) != 0 & !all(residence_county %in% mn_counties)){
+  county_error <- residence_county[!residence_county %in% mn_counties][1] #just take first
+  
+  error_dist <- data.frame(
+    county = mn_counties,
+    dist = adist(mn_counties, county_error))
+  
+  closest_matches <- error_dist[error_dist$dist == min(error_dist$dist),]$county
+  
+  stop(paste0(county_error, 
+              " is not a valid county selection. Could you have meant one of the following options? - \n",
+              paste0(closest_matches, collapse = ", ")))
+}
+
 #Cleanup
-rm(values)
+rm(values, mn_counties)
 
 message("Manually input values validated.")

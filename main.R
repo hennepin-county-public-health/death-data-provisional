@@ -1,9 +1,12 @@
 #Set mandatory values
 input_folder <- NULL
-output_folder <- NULL
-output_file <- NULL #year will be appended after if "annual" format is chosen
+output_folder <- "./trusted_data/"
+output_file <- "trusted_death_data"
 output_format <- c("csv", "parquet")
 trusted_format <- c("combined", "annual")
+
+#If you want to filter the trusted data to a particular county or counties, specify here
+residence_county <- c("", "")
 
 #Run scripts
 source("./steps/validate_inputs.R")

@@ -64,5 +64,5 @@ if ("annual" %in% trusted_format){
 #ADD
 #If trusted file already exists, share info on changes since the last file was written similar to our email notification.
 #Else be silent
-
+rm(dth_final) #don't encourage analysis here
 message("Trusted data written. Data cleaning completed.")
