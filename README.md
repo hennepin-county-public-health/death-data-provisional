@@ -30,6 +30,8 @@ Throughout this text, we use use a couple pieces of terminology that are useful 
 
 ## Modify main.R
 
+First, open the *death-data-provisional* R project in your cloned repo in your IDE.
+
 All code in this repo can be run using *main.R*. It requires the user to fill in a few pieces of information unique to them before running the code. This is the only part of running the code that should require any manual input. Users must set the following values:
 
 -   **Input folder**: the path to the folder where the raw data is stored. All files in this folder will be used. Like all strings in R, the folder path should be within quotes.
@@ -105,3 +107,5 @@ Users may wish to geocode location information for more accurate reporting.
 -   Rename documentation so it's in a consistent format
 
 -   Maybe join with more info about underlying cause of death rankings
+
+-   Add script that combines all steps into a single files. Probably in another folder. Add note to description that alternatively you can run all the code in a single script.
