@@ -30,6 +30,11 @@ dth_raw <- map(files$file, function(f){
 }) |>
   list_rbind()
 
+if (length(residence_county) != 0){
+  dth_raw <- dth_raw |>
+    filter(decd_res_cnty %in% residence_county)
+}
+
 message("Raw data loaded from the files below.")
 print(files |> select(-file))
 

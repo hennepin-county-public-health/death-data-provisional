@@ -56,9 +56,9 @@ All code in this repo can be run using *main.R*. It requires the user to fill in
     -   Similar to the last argument, keep `trusted_format <- c("combined", "annual")` to write both types of files or remove one.
     -   The year will be appended the name of annual files, for instance *mn_provisional_data_2026.csv*.
 
--   **Residence county filter**: add the name of one or more counties you'd like data for. The trusted data will be filtered to only include these counties using the *decd_res_cnty* variable.
+-   **Residence county filter**: add the name of one or more counties you'd like data for. The trusted data will be filtered to only include these counties using the *decd_res_cnty* variable. Otherwise, leaving this blank will return data for all Minnesota counties.
 
-    -   Examples: `residence_county <- c("TODD")` or `residence_county <- c("TODD", "STEARNS")` .
+    -   Examples: `residence_county <- c("TODD")` or `residence_county <- c("TODD", "STEARNS")`.
 
 The remainder of the orchestration script will run each step in order. No manual changes should be necessary. Users will receive occasional messages in their console as each step runs and complete. Once all steps are completed, they should find the trusted data saved in their specified folder. The code generally shouldn't take more than a minute to finish, although it may be a bit slower the first time it's run.
 

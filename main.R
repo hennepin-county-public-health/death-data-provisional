@@ -6,7 +6,7 @@ output_format <- c("csv", "parquet")
 trusted_format <- c("combined", "annual")
 
 #If you want to filter the trusted data to a particular county or counties, specify here
-residence_county <- c("", "")
+residence_county <- c("")
 
 #Run scripts
 source("./steps/validate_inputs.R")
