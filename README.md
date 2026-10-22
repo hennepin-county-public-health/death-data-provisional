@@ -12,9 +12,25 @@ For additional documentation about working with the provisional death data, see 
 
 -   Download R and and your preferred integrated developed environment (IDE) such as RStudio or Visual Studio Code.
 
-# Cloning this repo
+# Downloading this code
 
-Running the death data cleaning code doesn't require extensive experience with GitHub, but users will need to download code from this repo to their local computer to run it. This is referred to as "cloning" a repo. All code files are located within the repo, along with these instructions and other documentation. Please read [Cloning a repository - GitHub Docs](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository) for information about how to clone this repo from your browser, or look for guidance specific to the software you prefer to use (RStudio, Visual Studio Code). Since this repo is public, users do not need a GitHub account to clone it.
+Users must download the code hosted in this repo to their local computer before it can be run.
+
+Running the death data cleaning code doesn't require extensive experience with GitHub, but users will need to download code from this repo to their local computer to run it. This repo is public, so a Github account is not required. Two options for doing so are referenced below.
+
+### Clone repo (requires git installation)
+
+[Cloning a Github repo](Cloning%20a%20repository%20-%20GitHub%20Docs) copies code from Github to your computer. Users can then keep that local folder in sync with changes to the online repo and even push their own changes back to the repo. Most IDEs have features that support cloning git repos. Both [RStudio](Version%20Control%20–%20RStudio%20User%20Guide) and [Visual Studio Code](https://code.visualstudio.com/docs/sourcecontrol/repos-remotes#_clone-repositories) have useful documentation for cloning repos.
+
+Regardless of the tool you use, you'll need to copy the repository URL. Click on the green "Code" button near the top of this repo and copy the file path. Then, follow guidance specific to your tool.
+
+![An example of how to copy the repository URL or download a zipped version of the repo](documentation/cloning_github_repo.png)
+
+### Download a zip file
+
+Rather than officially cloning the repo, users can simply select "Download ZIP" in the dropdown menu to download the entire repo. Then, just unzip that folder and proceed.
+
+This is referred to as "cloning" a repo. All code files are located within the repo, along with these instructions and other documentation. Please read [Cloning a repository - GitHub Docs](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository) for information about how to clone this repo from your browser, or look for guidance specific to the software you prefer to use (RStudio, Visual Studio Code). Since this repo is public, users do not need a GitHub account to clone it.
 
 *Think through this guidance. They don't need to go through all steps, could just download it from browser. Develop description for both options.*
 
