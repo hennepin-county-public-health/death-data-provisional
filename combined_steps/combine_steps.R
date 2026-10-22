@@ -30,6 +30,7 @@ for (s in steps){
 
 close(comb_script)
 
+#Write git hook that will auto-run this script on commit
 hook_path <- ".git/hooks/pre-commit"
 
 writeLines(c(
