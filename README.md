@@ -22,6 +22,8 @@ Running the death data cleaning code doesn't require extensive experience with G
 
 Code for data cleaning and transformation is broken down into several short R scripts, each intended to accomplish a particular task. This format was intended to make the code easier to understand than if it was combined into a single longer script. As a result, the *main.R* file is used as an "orchestrator" file. Running this script will run each individual task in the correct order, producing a cleaned file.
 
+If you prefer running all code in a single script, use *combined_steps/all_steps_combined.R* instead. The description below will still be relevant.
+
 Throughout this text, we use use a couple pieces of terminology that are useful to know.
 
 -   Raw data: this is data in the original form you receive it, without any changes. Raw provisional death data comes directly from the Minnesota Department of Health (MDH) Cloud Drive. Please keep the original file names (i.e. 2026_MNDEATHS_20260921.csv) because having the date in the file name is important for this process.
