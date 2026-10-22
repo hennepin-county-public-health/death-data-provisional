@@ -14,15 +14,11 @@ For additional documentation about working with the provisional death data, see 
 
 # Downloading this code
 
-Users must download the code hosted in this repo to their local computer before it can be run.
-
-Running the death data cleaning code doesn't require extensive experience with GitHub, but users will need to download code from this repo to their local computer to run it. This repo is public, so a Github account is not required. Two options for doing so are referenced below.
+Users must download the code hosted in this repo to their local computer before it can be run. This repo is public, so a Github account is not required. Two options for doing so are referenced below.
 
 ### Clone repo (requires git installation)
 
-[Cloning a Github repo](Cloning%20a%20repository%20-%20GitHub%20Docs) copies code from Github to your computer. Users can then keep that local folder in sync with changes to the online repo and even push their own changes back to the repo. Most IDEs have features that support cloning git repos. Both [RStudio](Version%20Control%20–%20RStudio%20User%20Guide) and [Visual Studio Code](https://code.visualstudio.com/docs/sourcecontrol/repos-remotes#_clone-repositories) have useful documentation for cloning repos.
-
-Regardless of the tool you use, you'll need to copy the repository URL. Click on the green "Code" button near the top of this repo and copy the file path. Then, follow guidance specific to your tool.
+[Cloning a Github repo](Cloning%20a%20repository%20-%20GitHub%20Docs) copies code from Github to your computer. Users can then keep that local folder synced with changes to the online version and even push their own changes back to the repo. Most IDEs have features that support git. Regardless of the tool you use, you'll need to copy the repository URL. Click on the green "Code" button near the top of this repo and copy the file path. Then, follow guidance specific to your tool, such as [RStudio](Version%20Control%20–%20RStudio%20User%20Guide) or [Visual Studio Code](https://code.visualstudio.com/docs/sourcecontrol/repos-remotes#_clone-repositories).
 
 ![An example of how to copy the repository URL or download a zipped version of the repo](documentation/cloning_github_repo.png)
 
@@ -139,5 +135,3 @@ Users may wish to geocode location information for more accurate reporting.
 -   Rename documentation so it's in a consistent format
 
 -   Maybe join with more info about underlying cause of death rankings
-
--   Add script that combines all steps into a single files. Probably in another folder. Add note to description that alternatively you can run all the code in a single script.
