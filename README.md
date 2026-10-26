@@ -86,9 +86,9 @@ This quick step makes sure all necessary manual values were added, and makes sur
 
 ### Step 2. Install and load packages
 
-This step ensures all required R packages are installed and loads them for future steps. Required packages are: *tidyverse, janitor, arrow, readxl, remotes,* and *albert.*
+This step ensures the correct versions of all required R packages are installed and loaded. Packages will be installed to an environment specific to this code so they won't affect other R work.
 
-\**And potentially that they're the correct version.*
+Required packages are: *arrow, dplyr, lubridate, purrr, readr, readxl, stringr, tibble, tidyr, tidyselect,* and their dependencies.
 
 ### Step 3. Load data
 

@@ -1,4 +1,4 @@
-### Combined script last updated 2026-10-26 16:10:55.619482 ###
+### Combined script last updated 2026-10-26 16:41:43.748616 ###
 
 #Set mandatory values
 input_folder <- NULL
@@ -87,18 +87,22 @@ rm(values, mn_counties, req_r_version, cur_r_version)
 
 message("Manually input values validated.")
 
-### Step: load_packages.R ###
+### Step: install_packages.R ###
 
 message("Step 2. Loading packages.")
 
+#Packages are installed in a local renv. See renv_manage.R for more information.
+#The command below will ensure all packages specified in renv are installed and are the correct version.
+renv::restore(prompt = FALSE)
+
 #Load packages
-#Packages are installed in a local renv. See renv_manage.R for more information. 
 library(dplyr)
 library(tidyr)
 library(lubridate)
 library(stringr)
 library(purrr)
 library(readr)
+library(tibble)
 library(tidyselect)
 library(readxl)
 library(arrow)

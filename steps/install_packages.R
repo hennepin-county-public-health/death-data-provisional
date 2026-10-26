@@ -1,43 +1,22 @@
 message("Step 2. Loading packages.")
 
-# Install packages
-#- do we want to set version here too?
-package_dependencies <- c(
-  "tidyverse", #may be worth using the individual packages to prevent so much being loaded
-  "janitor", #may be able to replace this depending on how it's used
-  "arrow", #for now.. does this install have any dependencies that could be a problem?
-  "readxl",
-  "remotes", #install github package
-  "albert"
-)
-
-#add general descriptions of how each package is used above
-
-uninstalled <- package_dependencies[!package_dependencies %in% rownames(installed.packages())]
-
-if (length(uninstalled) != 0){
-  for (p in uninstalled){
-    
-    if (p == "albert"){
-      remotes::install_github("hennepin-county-public-health/albert")
-    } else {
-      install.packages(p)
-    }
-    
-    message(paste0("Installed package: ", p))
-  }
-  
-}
+#Packages are installed in a local renv. See renv_manage.R for more information.
+#The command below will ensure all packages specified in renv are installed and are the correct version.
+renv::restore(prompt = FALSE)
 
 #Load packages
-library(tidyverse)
-library(janitor)
+library(dplyr)
+library(tidyr)
+library(lubridate)
+library(stringr)
+library(purrr)
+library(readr)
+library(tibble)
+library(tidyselect)
 library(readxl)
 library(arrow)
-library(albert)
 
-#Clean up
-rm(package_dependencies, uninstalled)
-
+#Rather than loading the entire albert package/dependencies, read in this single function
+source("https://raw.githubusercontent.com/hennepin-county-public-health/albert/refs/heads/main/R/consult_dictionary.R")
 
 message("All required packages installed and loaded.")
