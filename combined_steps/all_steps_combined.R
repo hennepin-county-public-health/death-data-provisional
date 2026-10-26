@@ -1,4 +1,4 @@
-### Combined script last updated 2026-10-26 12:45:33.624367 ###
+### Combined script last updated 2026-10-26 16:10:55.619482 ###
 
 #Set mandatory values
 input_folder <- NULL
@@ -13,6 +13,17 @@ residence_county <- c("")
 ### Step: validate_inputs.R ###
 
 message("Step 1. Validating manually input values.")
+
+#Ensure access to base R pipe. If this is a major obstacle, could switch to tidy one
+req_r_version <- "4.1.0" #added in this release
+cur_r_version <- getRversion()
+
+if (cur_r_version < req_r_version){
+  stop(
+    paste0("This project requires R >= ", req_r_version, " because it uses the base R pipe. ",
+           "Your R version is ", cur_r_version, ". Please upgrade before using this code.")
+  )
+}
 
 #Make a couple options case-insensitive
 output_format <- gsub("\\.", "", tolower(output_format))
@@ -72,53 +83,28 @@ if (length(residence_county) != 0 & !all(residence_county %in% mn_counties)){
 }
 
 #Cleanup
-rm(values, mn_counties)
+rm(values, mn_counties, req_r_version, cur_r_version)
 
 message("Manually input values validated.")
 
-### Step: install_packages.R ###
+### Step: load_packages.R ###
 
 message("Step 2. Loading packages.")
 
-# Install packages
-#- do we want to set version here too?
-package_dependencies <- c(
-  "tidyverse", #may be worth using the individual packages to prevent so much being loaded
-  "janitor", #may be able to replace this depending on how it's used
-  "arrow", #for now.. does this install have any dependencies that could be a problem?
-  "readxl",
-  "remotes", #install github package
-  "albert"
-)
-
-#add general descriptions of how each package is used above
-
-uninstalled <- package_dependencies[!package_dependencies %in% rownames(installed.packages())]
-
-if (length(uninstalled) != 0){
-  for (p in uninstalled){
-    
-    if (p == "albert"){
-      remotes::install_github("hennepin-county-public-health/albert")
-    } else {
-      install.packages(p)
-    }
-    
-    message(paste0("Installed package: ", p))
-  }
-  
-}
-
 #Load packages
-library(tidyverse)
-library(janitor)
+#Packages are installed in a local renv. See renv_manage.R for more information. 
+library(dplyr)
+library(tidyr)
+library(lubridate)
+library(stringr)
+library(purrr)
+library(readr)
+library(tidyselect)
 library(readxl)
 library(arrow)
-library(albert)
 
-#Clean up
-rm(package_dependencies, uninstalled)
-
+#Rather than loading the entire albert package/dependencies, read in this single function
+source("https://raw.githubusercontent.com/hennepin-county-public-health/albert/refs/heads/main/R/consult_dictionary.R")
 
 message("All required packages installed and loaded.")
 

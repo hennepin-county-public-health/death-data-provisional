@@ -1,5 +1,16 @@
 message("Step 1. Validating manually input values.")
 
+#Ensure access to base R pipe. If this is a major obstacle, could switch to tidy one
+req_r_version <- "4.1.0" #added in this release
+cur_r_version <- getRversion()
+
+if (cur_r_version < req_r_version){
+  stop(
+    paste0("This project requires R >= ", req_r_version, " because it uses the base R pipe. ",
+           "Your R version is ", cur_r_version, ". Please upgrade before using this code.")
+  )
+}
+
 #Make a couple options case-insensitive
 output_format <- gsub("\\.", "", tolower(output_format))
 trusted_format <- tolower(trusted_format)
@@ -58,6 +69,6 @@ if (length(residence_county) != 0 & !all(residence_county %in% mn_counties)){
 }
 
 #Cleanup
-rm(values, mn_counties)
+rm(values, mn_counties, req_r_version, cur_r_version)
 
 message("Manually input values validated.")
