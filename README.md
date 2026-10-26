@@ -18,7 +18,7 @@ Users must download the code hosted in this repo to their local computer before 
 
 ### Clone repo (requires git installation)
 
-[Cloning a Github repo](Cloning%20a%20repository%20-%20GitHub%20Docs) copies code from Github to your computer. Users can then keep that local folder synced with changes to the online version and even push their own changes back to the repo. Most IDEs have features that support git. Regardless of the tool you use, you'll need to copy the repository URL. Click on the green "Code" button near the top of this repo and copy the file path. Then, follow guidance specific to your tool, such as [RStudio](https://docs.posit.co/ide/user/ide/guide/tools/version-control.html#getting-started) or [Visual Studio Code](https://code.visualstudio.com/docs/sourcecontrol/repos-remotes#_clone-repositories).
+[Cloning a Github repo](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository) copies code from Github to your computer. Users can then keep that local folder synced with changes to the online version and even push their own changes back to the repo. Most IDEs have features that support git. Regardless of the tool you use, you'll need to copy the repository URL. Click on the green "Code" button near the top of this repo and copy the file path. Then, follow guidance specific to your tool, such as [RStudio](https://docs.posit.co/ide/user/ide/guide/tools/version-control.html#getting-started) or [Visual Studio Code](https://code.visualstudio.com/docs/sourcecontrol/repos-remotes#_clone-repositories).
 
 ![An example of how to copy the repository URL or download a zipped version of the repo](documentation/cloning_github_repo.png)
 
