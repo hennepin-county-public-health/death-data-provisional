@@ -44,7 +44,7 @@ Throughout this text, we use use a couple pieces of terminology that are useful 
 
 ## Modify main.R
 
-First, open the *death-data-provisional* R project in your cloned repo using your IDE.
+First, open the *death-data-provisional* R project in your cloned repo using your IDE. When opening the project for the first time, you may see a message in your R console about using `renv::refresh()` to update installed packages. You can safely ignore it.
 
 All code in this repo can be run using *main.R*. It requires the user to fill in a few pieces of information unique to them before running the code. This is the only part of running the code that should require any manual input. Users must set the following values:
 
