@@ -1,4 +1,4 @@
-### Combined script last updated 2026-10-27 09:42:37.81583 ###
+### Combined script last updated 2026-10-27 10:17:39.128171 ###
 
 #Set mandatory values
 input_folder <- NULL
@@ -266,10 +266,11 @@ dth_cod <- dth_raw |>
     c_cc_alcohol = if_else(if_any(contains("rac_icd"), ~ . == "T51"), 1, 0), 
     c_cc_methamphetamine = if_else(if_any(contains("rac_icd"), ~ . == "T436"), 1, 0),
     c_cc_benzodiazepines = if_else(if_any(contains("rac_icd"), ~ . == "T424"), 1, 0),
-    c_cc_fentanyl = ifelse(if_any(c(starts_with("cause_dth")), ~str_detect(., "FENTANYL") & !is.na(.)), 1, 0), #added 3/29/23
+    c_cc_fentanyl = if_else(if_any(c(starts_with("cause_dth")), ~str_detect(., "FENTANYL") & !is.na(.)), 1, 0), #added 3/29/23
     
-    c_covid = ifelse(if_any(contains("rac_icd"), ~str_detect(., "U071")), 1, 0), #added 3/10/23
-    c_xylazine = ifelse(if_any(c(starts_with("cause_dth")), ~str_detect(., "XYLAZINE|XYLOZINE") & !is.na(.)), 1, 0), #added 3/15/23
+    c_covid = if_else(acme_unly_cause_dth == "U071", 1, 0),
+    c_cc_covid = if_else(if_any(contains("rac_icd"), ~str_detect(., "U071")), 1, 0), 
+    c_xylazine = if_else(if_any(c(starts_with("cause_dth")), ~str_detect(., "XYLAZINE|XYLOZINE") & !is.na(.)), 1, 0), #added 3/15/23
     
     c_cancer_detail = case_when(
       !str_detect(acme_unly_cause_dth, "^C") ~ as.character(NA), #non-cancer
@@ -362,6 +363,15 @@ dth_cln <- dth_cod |>
            decd_age_yr >= 0 & decd_sex == "F" & decd_age_yr < fleyr ~ fleyr - 0.5 - decd_age_yr, 
            .default = 0), #all cases where age is 75+
          
+         medical_examiner = case_when(
+           certfr_addr_strt == "HENNEPIN COUNTY MEDICAL EXAMINER'S OFFICE" ~ "Hennepin County Medical Examiner's Office",
+           str_detect(certfr_addr_strt, "^14250 COUNTY ROAD|^14250 CTY RD") ~ "Hennepin County Medical Examiner's Office",
+           str_detect(certfr_addr_strt, "^14341 RHINESTONE") ~ "Midwest Medical Examiner's Office",
+           str_detect(certfr_addr_strt, "^200 1ST ST|^201 1ST ST") ~ "Southern Minnesota Regional Medical Examiner’s Office",
+           str_detect(certfr_addr_strt, "^300 E UNIVERSITY|300 EAST UNIVERSITY") ~ "Ramsey County Medical Examiner",
+           str_detect(certfr_addr_strt, "^1301 N COLUMBIA") ~ "Grand Forks County Coroner",
+           .default = NA),
+         
          #create race/ethnicity cats. 
          subject_asian_pi = if_else(
            if_any(
@@ -403,8 +413,7 @@ dth_cln <- dth_cod |>
          
          #create race/ethnicity with American Indian trumping
          subject_race_ethn_ai = if_else(
-           subject_american_indian == "Y" & !is.na(subject_american_indian), 1, subject_race_ethn), #American Indian or Alaska Native any race/ethn
-        ) |>
+           subject_american_indian == "Y" & !is.na(subject_american_indian), 1, subject_race_ethn)) |> #American Indian or Alaska Native any race/ethn
   left_join(icd_dict |> select(code, acme_unly_cause_dth_desc = description), 
             by = c("acme_unly_cause_dth" = "code")) |>
   select(-c(num_races, num_races_drop, decd_educ_cd)) |>
@@ -424,9 +433,10 @@ dth_final <- dth_cln |>
   select(st_file_nbr, file_year, dataset_last_updated,decd_frst_nme:decd_brth_cty_fips_cd, decd_armf_fl:decd_mrtl_status, decd_preg_desc, decd_preg_cd, decd_educ_cd:decd_idsty, #demographic, birth stuff
          decd_res_nursing:decd_res_cty_twnshp_limits, decd_dth_dt:decd_dth_tm_modifier, decd_plce_dth_typ:decd_dth_cnty_fips_cd, #residence, death info
          dt_last_seen_day:cause_dth_othr, acme_unly_cause_dth, acme_unly_cause_dth_desc, mnl_unly_cause_dth, tobacco_contributed, injury_fl:injury_loc_transport_cd, mleyr:ypll_75, #injury, ypll
-         subject_race_ethn, subject_race = race_decedent_6, subject_hisp, subject_not_hispanic:subject_white, subject_black, subject_african_american:subject_tribe_txt2, subject_asian_pi, subject_nhpi, subject_asian_indian:subject_notobtainable_race, #race
+         subject_race_ethn, subject_race = race_decedent_6, subject_hisp, subject_not_hispanic:subject_white, subject_black, subject_african_american:subject_tribe_txt2, 
+         subject_asian_pi, subject_asian_indian:subject_othr_asn_txt2, subject_nhpi, subject_hawaiian:subject_notobtainable_race, #race
          subject_racebrg, sps_frst_nme:sps_lst_nme, sps_married_lst_nme, fthr_frst_nme:mthr_sfx_nme, #family
-         ifrmt_type:ifrmt_addr_intl_cd, disp_mthd_burial:fd_sfx_nme, me_contacted:ca_injury_or_trauma_describe, me_autpsy, me_autpsy_res_avlbl, me_rlgs_objctn_to_autpsy:me_approved_dt, certfr_manner_dth:cmplt_fl, #burial etc
+         ifrmt_type:ifrmt_addr_intl_cd, disp_mthd_burial:fd_sfx_nme, me_contacted:ca_injury_or_trauma_describe, me_autpsy, medical_examiner, me_autpsy_res_avlbl, me_rlgs_objctn_to_autpsy:me_approved_dt, certfr_manner_dth:cmplt_fl, #burial etc
          c_injury_suicide:suicide_other, #created cod
          contains("rac_icd"), contains("rac_created"), #cause of death codes
          subject_race_mvr:subject_ethnic5c, #other race vars

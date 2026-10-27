@@ -3,6 +3,13 @@ message("Step 5. Race and ethnicity cleaning started.")
 #Read in ICD code dict
 icd_dict <- suppressMessages(read_csv("./documentation/ICD10_code_dictionary.csv"))
 
+#There are some mismatches in educ code and desc. When conflicts, use this to default to the desc value
+educ_cleaned <- dth_cod |>
+  filter(!is.na(decd_educ_cd)) |>
+  count(decd_educ_cd, decd_educ) |>
+  filter(n == max(n), .by = decd_educ_cd) |>
+  select(-n)
+
 dth_cln <- dth_cod |>
   mutate(across(c(me_first_referred_dt, me_refer_dt, me_reassign_dt, me_assumed_dt, me_approved_dt), as_date), #these were originally dttm, could change back if necessary
          #remove NA placeholders
@@ -24,12 +31,26 @@ dth_cln <- dth_cod |>
            decd_age_yr >= 0 & decd_sex == "F" & decd_age_yr < fleyr ~ fleyr - 0.5 - decd_age_yr, 
            .default = 0), #all cases where age is 75+
          
+         medical_examiner = case_when(
+           certfr_addr_strt == "HENNEPIN COUNTY MEDICAL EXAMINER'S OFFICE" ~ "Hennepin County Medical Examiner's Office",
+           str_detect(certfr_addr_strt, "^14250 COUNTY ROAD|^14250 CTY RD") ~ "Hennepin County Medical Examiner's Office",
+           str_detect(certfr_addr_strt, "^14341 RHINESTONE") ~ "Midwest Medical Examiner's Office",
+           str_detect(certfr_addr_strt, "^200 1ST ST|^201 1ST ST") ~ "Southern Minnesota Regional Medical Examiner’s Office",
+           str_detect(certfr_addr_strt, "^300 E UNIVERSITY|300 EAST UNIVERSITY") ~ "Ramsey County Medical Examiner",
+           str_detect(certfr_addr_strt, "^1301 N COLUMBIA") ~ "Grand Forks County Coroner",
+           .default = NA),
+         
          #create race/ethnicity cats. 
          subject_asian_pi = if_else(
            if_any(
              c(subject_asian_indian, subject_chinese, subject_filipino, subject_japanese, subject_korean, subject_vietnamese, subject_hmong,
                subject_cambodian, subject_laotian, subject_other_asian, subject_hawaiian, subject_guamanian_chamorro, subject_samoan,
                subject_other_pacific_islander),
+             ~.x == "Y"),
+           "Y", "N"),
+         subject_nhpi = if_else(
+           if_any(
+             c(subject_hawaiian, subject_guamanian_chamorro, subject_samoan, subject_other_pacific_islander),
              ~.x == "Y"),
            "Y", "N"),
          subject_black = ifelse(
@@ -60,13 +81,14 @@ dth_cln <- dth_cod |>
          
          #create race/ethnicity with American Indian trumping
          subject_race_ethn_ai = if_else(
-           subject_american_indian == "Y" & !is.na(subject_american_indian), 1, subject_race_ethn), #American Indian or Alaska Native any race/ethn
-        ) |>
+           subject_american_indian == "Y" & !is.na(subject_american_indian), 1, subject_race_ethn)) |> #American Indian or Alaska Native any race/ethn
   left_join(icd_dict |> select(code, acme_unly_cause_dth_desc = description), 
             by = c("acme_unly_cause_dth" = "code")) |>
-  select(-c(num_races, num_races_drop))
+  select(-c(num_races, num_races_drop, decd_educ_cd)) |>
+  left_join(educ_cleaned, by = "decd_educ") |>
+  mutate(decd_educ_cd = if_else(decd_educ == "-9", -9, decd_educ_cd))
 
 #Cleanup
-rm(icd_dict, dth_cod)
+rm(icd_dict, dth_cod, educ_cleaned)
 
 message("Race and ethnicity coding completed.")

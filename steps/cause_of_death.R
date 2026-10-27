@@ -105,10 +105,11 @@ dth_cod <- dth_raw |>
     c_cc_alcohol = if_else(if_any(contains("rac_icd"), ~ . == "T51"), 1, 0), 
     c_cc_methamphetamine = if_else(if_any(contains("rac_icd"), ~ . == "T436"), 1, 0),
     c_cc_benzodiazepines = if_else(if_any(contains("rac_icd"), ~ . == "T424"), 1, 0),
-    c_cc_fentanyl = ifelse(if_any(c(starts_with("cause_dth")), ~str_detect(., "FENTANYL") & !is.na(.)), 1, 0), #added 3/29/23
+    c_cc_fentanyl = if_else(if_any(c(starts_with("cause_dth")), ~str_detect(., "FENTANYL") & !is.na(.)), 1, 0), #added 3/29/23
     
-    c_covid = ifelse(if_any(contains("rac_icd"), ~str_detect(., "U071")), 1, 0), #added 3/10/23
-    c_xylazine = ifelse(if_any(c(starts_with("cause_dth")), ~str_detect(., "XYLAZINE|XYLOZINE") & !is.na(.)), 1, 0), #added 3/15/23
+    c_covid = if_else(acme_unly_cause_dth == "U071", 1, 0),
+    c_cc_covid = if_else(if_any(contains("rac_icd"), ~str_detect(., "U071")), 1, 0), 
+    c_xylazine = if_else(if_any(c(starts_with("cause_dth")), ~str_detect(., "XYLAZINE|XYLOZINE") & !is.na(.)), 1, 0), #added 3/15/23
     
     c_cancer_detail = case_when(
       !str_detect(acme_unly_cause_dth, "^C") ~ as.character(NA), #non-cancer
