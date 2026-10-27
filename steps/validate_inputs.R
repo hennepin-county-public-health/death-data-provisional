@@ -44,7 +44,7 @@ output_folder <- if (grepl("/$", output_folder)) {
 }
 
 #If default trusted folder is selected, create if it doesn't exist
-if (!file.exists("./trusted_data/")){
+if (output_folder == "./trusted_data/" & !file.exists("./trusted_data/")){
   dir.create(output_folder)
 }
 
