@@ -1,4 +1,4 @@
-### Combined script last updated 2026-10-26 16:47:05.47045 ###
+### Combined script last updated 2026-10-27 09:35:37.440266 ###
 
 #Set mandatory values
 input_folder <- NULL
@@ -334,6 +334,13 @@ message("Step 5. Race and ethnicity cleaning started.")
 #Read in ICD code dict
 icd_dict <- suppressMessages(read_csv("./documentation/ICD10_code_dictionary.csv"))
 
+#There are some mismatches in educ code and desc. When conflicts, use this to default to the desc value
+educ_cleaned <- dth_cod |>
+  filter(!is.na(decd_educ_cd)) |>
+  count(decd_educ_cd, decd_educ) |>
+  filter(n == max(n), .by = decd_educ_cd) |>
+  select(-n)
+
 dth_cln <- dth_cod |>
   mutate(across(c(me_first_referred_dt, me_refer_dt, me_reassign_dt, me_assumed_dt, me_approved_dt), as_date), #these were originally dttm, could change back if necessary
          #remove NA placeholders
@@ -361,6 +368,11 @@ dth_cln <- dth_cod |>
              c(subject_asian_indian, subject_chinese, subject_filipino, subject_japanese, subject_korean, subject_vietnamese, subject_hmong,
                subject_cambodian, subject_laotian, subject_other_asian, subject_hawaiian, subject_guamanian_chamorro, subject_samoan,
                subject_other_pacific_islander),
+             ~.x == "Y"),
+           "Y", "N"),
+         subject_nhpi = if_else(
+           if_any(
+             c(subject_hawaiian, subject_guamanian_chamorro, subject_samoan, subject_other_pacific_islander),
              ~.x == "Y"),
            "Y", "N"),
          subject_black = ifelse(
@@ -395,10 +407,12 @@ dth_cln <- dth_cod |>
         ) |>
   left_join(icd_dict |> select(code, acme_unly_cause_dth_desc = description), 
             by = c("acme_unly_cause_dth" = "code")) |>
-  select(-c(num_races, num_races_drop))
+  select(-c(num_races, num_races_drop, decd_educ_cd)) |>
+  left_join(educ_cleaned, by = "decd_educ") |>
+  mutate(decd_educ_cd = if_else(decd_educ == "-9", -9, decd_educ_cd))
 
 #Cleanup
-rm(icd_dict, dth_cod)
+rm(icd_dict, dth_cod, educ_cleaned)
 
 message("Race and ethnicity coding completed.")
 
@@ -410,7 +424,7 @@ dth_final <- dth_cln |>
   select(st_file_nbr, file_year, dataset_last_updated,decd_frst_nme:decd_brth_cty_fips_cd, decd_armf_fl:decd_mrtl_status, decd_preg_desc, decd_preg_cd, decd_educ_cd:decd_idsty, #demographic, birth stuff
          decd_res_nursing:decd_res_cty_twnshp_limits, decd_dth_dt:decd_dth_tm_modifier, decd_plce_dth_typ:decd_dth_cnty_fips_cd, #residence, death info
          dt_last_seen_day:cause_dth_othr, acme_unly_cause_dth, acme_unly_cause_dth_desc, mnl_unly_cause_dth, tobacco_contributed, injury_fl:injury_loc_transport_cd, mleyr:ypll_75, #injury, ypll
-         subject_race_ethn, subject_race = race_decedent_6, subject_hisp, subject_not_hispanic:subject_white, subject_black, subject_african_american:subject_tribe_txt2, subject_asian_pi, subject_asian_indian:subject_notobtainable_race, #race
+         subject_race_ethn, subject_race = race_decedent_6, subject_hisp, subject_not_hispanic:subject_white, subject_black, subject_african_american:subject_tribe_txt2, subject_asian_pi, subject_nhpi, subject_asian_indian:subject_notobtainable_race, #race
          subject_racebrg, sps_frst_nme:sps_lst_nme, sps_married_lst_nme, fthr_frst_nme:mthr_sfx_nme, #family
          ifrmt_type:ifrmt_addr_intl_cd, disp_mthd_burial:fd_sfx_nme, me_contacted:ca_injury_or_trauma_describe, me_autpsy, me_autpsy_res_avlbl, me_rlgs_objctn_to_autpsy:me_approved_dt, certfr_manner_dth:cmplt_fl, #burial etc
          c_injury_suicide:suicide_other, #created cod
