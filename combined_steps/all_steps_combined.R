@@ -1,4 +1,4 @@
-### Combined script last updated 2026-10-28 09:56:54.104581 ###
+### Combined script last updated 2026-10-28 13:15:48.289468 ###
 
 #Set mandatory values
 input_folder <- NULL
@@ -386,14 +386,14 @@ dth_cln <- dth_cod |>
            "Y", "N"),
          subject_asian_pi = if_else(
            if_any(c(subject_asian, subject_nh_pi), ~.x == "Y"), "Y", "N"),
-         subject_black = ifelse(
+         subject_black = if_else(
            if_any(
              c(subject_african_american, subject_somali, subject_ethiopian, subject_liberian, subject_kenyan, subject_sudanese, subject_nigerian,
                subject_ghanian, subject_other_african),
              ~.x == "Y"),
            "Y", "N"),
          num_races = str_count(paste0(subject_white, subject_american_indian, subject_asian_pi, subject_black, subject_other), "Y"),
-         num_races_drop = ifelse(num_races == 2 & !is.na(subject_other) & subject_other == "Y", 1, num_races), #drop 'other' if two races are selected
+         num_races_drop = if_else(num_races == 2 & !is.na(subject_other) & subject_other == "Y", 1, num_races), #drop 'other' if two races are selected
          race_decedent_6 = case_when(
            num_races_drop > 1 ~ 6, #Two or more
            subject_american_indian == "Y" ~ 1, #American Indian or Alaska Native alone
@@ -435,7 +435,7 @@ dth_final <- dth_cln |>
          decd_res_nursing:decd_res_cty_twnshp_limits, decd_dth_dt:decd_dth_tm_modifier, decd_plce_dth_typ:decd_dth_cnty_fips_cd, #residence, death info
          dt_last_seen_day:cause_dth_othr, acme_unly_cause_dth, acme_unly_cause_dth_desc, mnl_unly_cause_dth, tobacco_contributed, injury_fl:injury_loc_transport_cd, mleyr:ypll_75, #injury, ypll
          subject_race_ethn, subject_race = race_decedent_6, subject_hisp, subject_not_hispanic:subject_white, subject_black, subject_african_american:subject_tribe_txt2, 
-         subject_asian_pi, subject_asian_indian:subject_othr_asn_txt2, subject_nhpi, subject_hawaiian:subject_notobtainable_race, #race
+         subject_asian_pi, subject_asian, subject_asian_indian:subject_othr_asn_txt2, subject_nh_pi, subject_hawaiian:subject_notobtainable_race, #race
          subject_racebrg, sps_frst_nme:sps_lst_nme, sps_married_lst_nme, fthr_frst_nme:mthr_sfx_nme, #family
          ifrmt_type:ifrmt_addr_intl_cd, disp_mthd_burial:fd_sfx_nme, me_contacted:ca_injury_or_trauma_describe, me_autpsy, medical_examiner, me_autpsy_res_avlbl, me_rlgs_objctn_to_autpsy:me_approved_dt, certfr_manner_dth:cmplt_fl, #burial etc
          c_injury_suicide:suicide_other, #created cod

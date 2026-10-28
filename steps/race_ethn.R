@@ -54,14 +54,14 @@ dth_cln <- dth_cod |>
            "Y", "N"),
          subject_asian_pi = if_else(
            if_any(c(subject_asian, subject_nh_pi), ~.x == "Y"), "Y", "N"),
-         subject_black = ifelse(
+         subject_black = if_else(
            if_any(
              c(subject_african_american, subject_somali, subject_ethiopian, subject_liberian, subject_kenyan, subject_sudanese, subject_nigerian,
                subject_ghanian, subject_other_african),
              ~.x == "Y"),
            "Y", "N"),
          num_races = str_count(paste0(subject_white, subject_american_indian, subject_asian_pi, subject_black, subject_other), "Y"),
-         num_races_drop = ifelse(num_races == 2 & !is.na(subject_other) & subject_other == "Y", 1, num_races), #drop 'other' if two races are selected
+         num_races_drop = if_else(num_races == 2 & !is.na(subject_other) & subject_other == "Y", 1, num_races), #drop 'other' if two races are selected
          race_decedent_6 = case_when(
            num_races_drop > 1 ~ 6, #Two or more
            subject_american_indian == "Y" ~ 1, #American Indian or Alaska Native alone

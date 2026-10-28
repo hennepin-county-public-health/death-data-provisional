@@ -5,7 +5,7 @@ dth_final <- dth_cln |>
          decd_res_nursing:decd_res_cty_twnshp_limits, decd_dth_dt:decd_dth_tm_modifier, decd_plce_dth_typ:decd_dth_cnty_fips_cd, #residence, death info
          dt_last_seen_day:cause_dth_othr, acme_unly_cause_dth, acme_unly_cause_dth_desc, mnl_unly_cause_dth, tobacco_contributed, injury_fl:injury_loc_transport_cd, mleyr:ypll_75, #injury, ypll
          subject_race_ethn, subject_race = race_decedent_6, subject_hisp, subject_not_hispanic:subject_white, subject_black, subject_african_american:subject_tribe_txt2, 
-         subject_asian_pi, subject_asian_indian:subject_othr_asn_txt2, subject_nhpi, subject_hawaiian:subject_notobtainable_race, #race
+         subject_asian_pi, subject_asian, subject_asian_indian:subject_othr_asn_txt2, subject_nh_pi, subject_hawaiian:subject_notobtainable_race, #race
          subject_racebrg, sps_frst_nme:sps_lst_nme, sps_married_lst_nme, fthr_frst_nme:mthr_sfx_nme, #family
          ifrmt_type:ifrmt_addr_intl_cd, disp_mthd_burial:fd_sfx_nme, me_contacted:ca_injury_or_trauma_describe, me_autpsy, medical_examiner, me_autpsy_res_avlbl, me_rlgs_objctn_to_autpsy:me_approved_dt, certfr_manner_dth:cmplt_fl, #burial etc
          c_injury_suicide:suicide_other, #created cod
