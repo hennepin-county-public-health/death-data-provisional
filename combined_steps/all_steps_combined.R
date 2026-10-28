@@ -1,4 +1,4 @@
-### Combined script last updated 2026-10-27 10:17:39.128171 ###
+### Combined script last updated 2026-10-28 09:56:54.104581 ###
 
 #Set mandatory values
 input_folder <- NULL
@@ -373,18 +373,19 @@ dth_cln <- dth_cod |>
            .default = NA),
          
          #create race/ethnicity cats. 
-         subject_asian_pi = if_else(
+         subject_asian = if_else(
            if_any(
              c(subject_asian_indian, subject_chinese, subject_filipino, subject_japanese, subject_korean, subject_vietnamese, subject_hmong,
-               subject_cambodian, subject_laotian, subject_other_asian, subject_hawaiian, subject_guamanian_chamorro, subject_samoan,
-               subject_other_pacific_islander),
+               subject_cambodian, subject_laotian, subject_other_asian),
              ~.x == "Y"),
            "Y", "N"),
-         subject_nhpi = if_else(
+         subject_nh_pi = if_else(
            if_any(
              c(subject_hawaiian, subject_guamanian_chamorro, subject_samoan, subject_other_pacific_islander),
              ~.x == "Y"),
            "Y", "N"),
+         subject_asian_pi = if_else(
+           if_any(c(subject_asian, subject_nh_pi), ~.x == "Y"), "Y", "N"),
          subject_black = ifelse(
            if_any(
              c(subject_african_american, subject_somali, subject_ethiopian, subject_liberian, subject_kenyan, subject_sudanese, subject_nigerian,
