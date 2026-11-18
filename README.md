@@ -2,7 +2,7 @@
 
 # Getting started
 
-This repository (repo) contains R code for standard cleaning and transformation of the provisional (weekly) Minnesota death file. Running it will produce a finalized death file for reliable reporting and analysis. This repo is publicly available to reduce the duplication of work between local public health departments and make it easier for them to report data using the same standards. The description below provides a step-by-step description of how to run the code and describes what it does.
+This repository (repo) contains R code for standard cleaning and transformation of the provisional (weekly) Minnesota death file. Running it will produce a finalized death file for reliable reporting and analysis. This repo is made publicly available to reduce the duplication of work between local public health departments and make it easier for them to report data using the same standards. The description below provides a step-by-step guide for how to run the code and describes what it does.
 
 For additional documentation about working with the provisional death data, see the [data dictionary](https://github.com/hennepin-county-public-health/death-data-provisional/blob/main/documentation/Death%20data%20dictionary.xlsx) and **some documentation describing the data***.* All content in this repo, including documentation, was assembled by Minnesota local public health staff that are part of the Death Data Collaborative. The goal of this collaborative is to develop and share best practices for working with death data.
 
